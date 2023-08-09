@@ -11,22 +11,23 @@ variables:
 
 steps:
 
-# Prepare Analysis Configuration task
-- task: SonarQubePrepare@5
+- task: SonarCloudPrepare@1
   inputs:
-    SonarQube: 'joshua-sonarqube' # SonarQube service connection id (found in Azure DevOps)
+    SonarCloud: 'SC'
+    organization: 'bc-sonarcloud-training'
     scannerMode: 'MSBuild'
-    projectKey: 'dotnetcore-azuredevops_dotnetcore-azuredevops_AYbAf9qWAu8T8ZieRlfh'
-    projectName: 'dotnetcore-sonar-azuredevops'
+    projectKey: 'dc-sample'
+    projectName: 'DotNet Core Sample'
 
 # Dotnet build task
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
 
-# Run Code Analysis task
-- task: SonarQubeAnalyze@5
 
-# Publish Quality Gate Result task
-- task: SonarQubePublish@5
+- task: SonarCloudAnalyze@1
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
